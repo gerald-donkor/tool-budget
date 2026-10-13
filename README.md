@@ -9,7 +9,7 @@ Two kinds of tool use get expensive in [Claude Code](https://claude.com/claude-c
 
 This skill gives Claude clear rules for when these tools are worth using and how to use them cheaply, without lowering the quality of the work: it cuts waste, never rigour. It also installs a small hook that counts your Figma MCP calls, warns you before you run out, and shows the count in your status bar.
 
-Install the skill with the [`skills` CLI](https://github.com/vercel-labs/skills), then set up the counter:
+Install the skill with the [`skills` CLI](https://github.com/vercel-labs/skills):
 
 ```bash
 npx skills add https://github.com/gerald-donkor/tool-budget --skill tool-budget
