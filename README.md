@@ -12,11 +12,10 @@ This skill gives Claude clear rules for when these tools are worth using and how
 Install the skill with the [`skills` CLI](https://github.com/vercel-labs/skills), then set up the counter:
 
 ```bash
-npx skills add https://github.com/gerald-donkor/tool-budget --skill tool-budget -g -a claude-code
-bash ~/.claude/skills/tool-budget/scripts/install.sh
+npx skills add https://github.com/gerald-donkor/tool-budget --skill tool-budget
 ```
 
-See [Install](#install) for requirements and other options.
+Then set up the counter by running the bundled installer from wherever the skill was installed, for example `bash ~/.claude/skills/tool-budget/scripts/install.sh`. See [Install](#install) for details.
 
 ## Table of contents
 
@@ -61,21 +60,32 @@ The Figma MCP server and the Claude in Chrome extension are optional. The rules 
 
 ### With the skills CLI (recommended)
 
-1. Install the skill for Claude Code, for your user account:
+1. Install the skill:
 
    ```bash
-   npx skills add https://github.com/gerald-donkor/tool-budget --skill tool-budget -g -a claude-code
+   npx skills add https://github.com/gerald-donkor/tool-budget --skill tool-budget
    ```
 
-   - `-g` installs it for every project (`~/.claude/skills/`). Leave it out to install into the current project's `.claude/skills/` instead.
-   - `-a claude-code` targets Claude Code. Leave it out to choose agents interactively, or add `-y` to skip the prompts.
-   - To see what the repo offers before installing, run `npx skills add https://github.com/gerald-donkor/tool-budget --list`.
+   The CLI asks which agents to install for; choose Claude Code. By default the skill goes into the current project's `.claude/skills/`. Useful options:
 
-2. Set up the counter, status-bar count and global rules block. The `skills` CLI only copies files, so this step runs the bundled installer:
+   - `-g` installs it for your user account, so it works in every project (`~/.claude/skills/`). Recommended.
+   - `-a claude-code` picks Claude Code without asking, and `-y` skips the remaining prompts.
+   - `--list` shows what the repo offers without installing anything.
+
+   For example, a global, non-interactive install for Claude Code:
 
    ```bash
-   bash ~/.claude/skills/tool-budget/scripts/install.sh
+   npx skills add https://github.com/gerald-donkor/tool-budget --skill tool-budget -g -a claude-code -y
    ```
+
+2. Set up the counter, status-bar count and global rules block. The `skills` CLI only copies files, so this step runs the bundled installer from where the skill was installed:
+
+   ```bash
+   bash ~/.claude/skills/tool-budget/scripts/install.sh      # global install (-g)
+   bash .claude/skills/tool-budget/scripts/install.sh        # project install, run from the project folder
+   ```
+
+   The counter and status-bar count always go into your user settings (`~/.claude`), so they apply in every project either way.
 
    Skip this step if you only want the guidance.
 
@@ -171,7 +181,7 @@ To change the rules themselves, edit [`SKILL.md`](SKILL.md) or [`scripts/claude-
 If you installed with the `skills` CLI:
 
 ```bash
-npx skills update tool-budget -g
+npx skills update tool-budget      # add -g for a global install
 bash ~/.claude/skills/tool-budget/scripts/install.sh
 ```
 
@@ -190,7 +200,7 @@ Re-running the installer copies the latest hook scripts and refreshes the rules 
 Remove the skill:
 
 ```bash
-npx skills remove tool-budget -g   # if you installed with the skills CLI
+npx skills remove tool-budget     # if you installed with the skills CLI (add -g for a global install)
 rm ~/.claude/skills/tool-budget    # if you installed with git
 ```
 

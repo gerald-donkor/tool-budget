@@ -103,7 +103,7 @@ The `[ -f … ]` check keeps your status line working on machines where the skil
 [`scripts/install.sh`](../scripts/install.sh) is safe to run more than once. Each step checks before changing anything:
 
 1. **Checks requirements.** Stops with a message if `jq` or `flock` is missing.
-2. **Links the skill** to `~/.claude/skills/tool-budget`. If the skill is already installed there (for example with `npx skills add … -g`), it says so and moves on. If something else that isn't a symlink exists there, it leaves it alone and says so.
+2. **Links the skill** to `~/.claude/skills/tool-budget`. If the skill was already installed by `npx skills add`, globally or in a project's `.claude/skills/`, it says so and leaves it where it is. If something else that isn't a symlink exists there, it leaves it alone and says so.
 3. **Copies the scripts** `figma-mcp-counter.sh` and `statusline-figma.sh` into `~/.claude/hooks/`, overwriting older copies.
 4. **Backs up `~/.claude/settings.json`** to `~/.claude/backups/settings.json.<timestamp>`, creating an empty settings file first if there isn't one.
 5. **Registers the hook** under `hooks.PreToolUse` with the matcher `mcp__figma__.*`, only if no hook with that matcher exists. Your other hooks and settings are kept.

@@ -99,7 +99,7 @@ The Figma MCP server limits tool calls that **read** Figma data. Limits from htt
 - From 195 it blocks Figma calls without logging them. Don't work around the block. Tell the user, who can allow the rest of the day with `touch ~/.claude/figma-mcp-allow-today`.
 - Change the levels with `FIGMA_MCP_LIMIT`, `FIGMA_MCP_WARN_AT` and `FIGMA_MCP_BLOCK_AT` in the `env` block of `~/.claude/settings.json`. For a 20/month seat this daily counter doesn't fit; tell the user instead of pretending it does.
 
-**Install:** the skill itself installs with `npx skills add https://github.com/gerald-donkor/tool-budget --skill tool-budget -g -a claude-code` (or a git clone). The `skills` CLI only copies files, so for the counter run `bash <skill-dir>/scripts/install.sh` (usually `~/.claude/skills/tool-budget/scripts/install.sh`), then have the user open `/hooks` once or restart Claude Code. Hooks are loaded at session start, so a newly added hook won't fire in the session that added it.
+**Install:** the skill itself installs with `npx skills add https://github.com/gerald-donkor/tool-budget --skill tool-budget` (add `-g` for every project; or a git clone). The `skills` CLI only copies files, so for the counter run `bash <skill-dir>/scripts/install.sh` (`~/.claude/skills/tool-budget/scripts/install.sh` for a global install, `.claude/skills/tool-budget/scripts/install.sh` in the project for a project install), then have the user open `/hooks` once or restart Claude Code. Hooks are loaded at session start, so a newly added hook won't fire in the session that added it.
 
 **Verify without spending quota:**
 

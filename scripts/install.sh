@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Installs the tool-budget skill into ~/.claude. Safe to re-run.
-#   - links the skill into ~/.claude/skills/tool-budget (skipped if it was installed there,
-#     e.g. with `npx skills add ... -g`)
+#   - links the skill into ~/.claude/skills/tool-budget (skipped if a skills manager such as
+#     `npx skills add` already installed it, globally or in a project)
 #   - installs the Figma MCP counter hook and status-line segment into ~/.claude/hooks
 #   - registers the hook in ~/.claude/settings.json (backed up first)
 #   - adds the status-line segment (new status line, or prints the line to add)
@@ -24,6 +24,10 @@ mkdir -p "$claude/hooks" "$claude/backups" "$claude/skills"
 link="$claude/skills/tool-budget"
 if [ -e "$link" ] && [ "$(cd "$link" && pwd -P)" = "$(cd "$skill_dir" && pwd -P)" ]; then
   echo "Skill already installed at $link"
+elif [ "$(basename "$(dirname "$skill_dir")")" = "skills" ]; then
+  # Installed by a skills manager (e.g. `npx skills add`) into an agent's skills folder,
+  # possibly a project's .claude/skills. Leave it where it is.
+  echo "Skill already installed at $skill_dir"
 elif [ -L "$link" ] || [ ! -e "$link" ]; then
   ln -sfn "$skill_dir" "$link"
   echo "Linked skill: $link -> $skill_dir"
