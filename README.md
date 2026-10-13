@@ -9,7 +9,7 @@ A Claude Code skill that keeps expensive tools cheap:
 ## Install
 
 ```bash
-git clone <this-repo> ~/Projects/tool-budget
+git clone https://github.com/gerald-donkor/tool-budget.git ~/Projects/tool-budget
 bash ~/Projects/tool-budget/scripts/install.sh
 ```
 
