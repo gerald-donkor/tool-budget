@@ -21,7 +21,9 @@ This page explains each part of the setup in detail. For installation and everyd
 - when you ask about token cost, rate limits, remaining calls or AI credits;
 - when setting up or debugging the counter.
 
-It has three parts:
+It starts with one principle that overrides the rest: **quality comes first**. The rules remove waste (repeated reads, unbounded dumps, polling, expensive tools where cheap ones give the same answer), never the reads and checks the work needs. If a budget or limit would force a weaker or unverified result, Claude stops and asks you instead of quietly cutting corners.
+
+It then has three parts:
 
 1. **Claude in Chrome as a last resort.** Use it only when all three hold:
    - the task needs a live, signed-in page (billing, admin, account settings);

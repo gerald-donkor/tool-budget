@@ -7,6 +7,15 @@ description: Keeps expensive tools cheap. Use before any Claude in Chrome (mcp__
 
 Two kinds of cost add up fast in Claude Code: **tokens** (browser screenshots and page dumps) and **rate-limited calls** (the Figma MCP server). This skill sets when each tool is worth it, how to use it cheaply, and how to install a counter that warns and blocks before Figma's limit is hit.
 
+## 0. Quality comes first
+
+Saving tokens and calls must never lower the quality of the work. These rules remove **waste**: repeated reads, unbounded dumps, polling, using an expensive tool where a cheap one gives the same answer. They don't remove **rigour**.
+
+- **Do every read and check the work needs.** Read the design context, inspect the nodes involved, and screenshot the result to compare it with the intent. Verifying a meaningful change is required, not optional.
+- **Spend where it counts.** Premium, pixel-accurate output is the goal. Save on the tools around the work, never on the work itself.
+- **Never trade quality for budget silently.** If the budget (the warning level, the block, a rate limit) would force a weaker result, stop and tell the user what's left, what the task still needs, and the options: continue later, use the override, or work from local sources. Let them decide.
+- **Never present unverified work as done.** If a check couldn't be run, say so.
+
 ## 1. Claude in Chrome: last resort
 
 Claude in Chrome drives the user's real, signed-in browser. It is slow, interrupts the user, needs the extension connected, and costs a lot of tokens.
@@ -46,7 +55,7 @@ Everything returned stays in the conversation context.
 - Prefer text over images: use `find` to locate an element, or `get_page_text` to read values, before taking a screenshot.
 - When a screenshot is needed, pass `scale: 0.5` (about a quarter of the tokens) or `zoom` on just the region that matters.
 - Never call `read_page` unbounded. Pass `filter: "interactive"`, a small `depth`, a `ref_id` for one section, or a lower `max_chars`.
-- Don't take a confirming screenshot after every click; check once when the result matters.
+- Don't take a confirming screenshot after every routine click. Do check every result that matters, at the zoom or scale needed to judge it properly.
 - Stop as soon as the answer is found, report it, and close the tab.
 
 ## 2. Figma MCP: rate-limited reads
@@ -70,8 +79,8 @@ The Figma MCP server limits tool calls that **read** Figma data. Limits from htt
 
 - Start with `get_metadata` to find the right node, then call `get_screenshot` or `get_design_context` on that node only, not on whole pages.
 - Don't re-read a node that hasn't changed in this session.
-- Don't poll or loop on read tools to "verify" work. Check once after a meaningful change.
-- On a rate-limit error or a block from the counter, stop, tell the user which limit was hit, and don't retry. Offer to continue later or to work from local files.
+- Don't poll or loop on read tools. Do verify every meaningful change: screenshot the changed node and compare it with the design intent, and read its design context whenever accuracy depends on it.
+- On a rate-limit error or a block from the counter, stop, tell the user which limit was hit, and don't retry. Offer to continue later, to use the override, or to work from local files. Never finish the task with lower-quality or unverified work because the budget ran out.
 
 ## 3. The Figma call counter
 

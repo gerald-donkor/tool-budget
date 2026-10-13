@@ -7,7 +7,7 @@ Two kinds of tool use get expensive in [Claude Code](https://claude.com/claude-c
 - **Tokens.** Browser automation with Claude in Chrome is powerful but costly. Every screenshot and page dump stays in the conversation.
 - **Rate-limited calls.** The Figma MCP server caps how many read calls you can make, and gives you no way to see how many are left.
 
-This skill gives Claude clear rules for when these tools are worth using and how to use them cheaply. It also installs a small hook that counts your Figma MCP calls, warns you before you run out, and shows the count in your status bar.
+This skill gives Claude clear rules for when these tools are worth using and how to use them cheaply, without lowering the quality of the work: it cuts waste, never rigour. It also installs a small hook that counts your Figma MCP calls, warns you before you run out, and shows the count in your status bar.
 
 ## Table of contents
 
