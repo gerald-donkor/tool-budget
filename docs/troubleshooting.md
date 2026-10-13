@@ -38,13 +38,14 @@ Calls from other apps, other machines or Figma's own AI features use the same li
 
 ## The skill doesn't appear in Claude Code
 
-Check the link:
+Check where it is installed:
 
 ```bash
 ls -l ~/.claude/skills/tool-budget
 ```
 
-It should point to your clone of this repo. If you moved the repo, re-run `scripts/install.sh`.
+- With a `skills` CLI install, it's a folder; `npx skills list -g` should list `tool-budget`. If you installed without `-g`, it's in the project's `.claude/skills/` instead and only appears in that project.
+- With a git install, it should be a link to your clone. If you moved the repo, re-run `scripts/install.sh`.
 
 ## Claude in Chrome won't connect
 

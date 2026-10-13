@@ -9,6 +9,15 @@ Two kinds of tool use get expensive in [Claude Code](https://claude.com/claude-c
 
 This skill gives Claude clear rules for when these tools are worth using and how to use them cheaply, without lowering the quality of the work: it cuts waste, never rigour. It also installs a small hook that counts your Figma MCP calls, warns you before you run out, and shows the count in your status bar.
 
+Install the skill with the [`skills` CLI](https://github.com/vercel-labs/skills), then set up the counter:
+
+```bash
+npx skills add https://github.com/gerald-donkor/tool-budget --skill tool-budget -g -a claude-code
+bash ~/.claude/skills/tool-budget/scripts/install.sh
+```
+
+See [Install](#install) for requirements and other options.
+
 ## Table of contents
 
 - [Background](#background)
@@ -40,6 +49,7 @@ Figma doesn't report how many MCP calls you have left, so the counter keeps its 
 ### Dependencies
 
 - [Claude Code](https://claude.com/claude-code), with hooks enabled (the default)
+- [Node.js](https://nodejs.org/), for `npx`, if you install with the `skills` CLI
 - `bash`
 - [`jq`](https://jqlang.org/), for reading hook input and editing `settings.json`
 - `flock` from `util-linux`, so parallel Figma calls are counted correctly
@@ -49,24 +59,48 @@ These are standard on most Linux distributions. On macOS, install `jq`, `coreuti
 
 The Figma MCP server and the Claude in Chrome extension are optional. The rules apply to whichever tools you have; the counter only acts when Figma tools are called.
 
-### Steps
+### With the skills CLI (recommended)
+
+1. Install the skill for Claude Code, for your user account:
+
+   ```bash
+   npx skills add https://github.com/gerald-donkor/tool-budget --skill tool-budget -g -a claude-code
+   ```
+
+   - `-g` installs it for every project (`~/.claude/skills/`). Leave it out to install into the current project's `.claude/skills/` instead.
+   - `-a claude-code` targets Claude Code. Leave it out to choose agents interactively, or add `-y` to skip the prompts.
+   - To see what the repo offers before installing, run `npx skills add https://github.com/gerald-donkor/tool-budget --list`.
+
+2. Set up the counter, status-bar count and global rules block. The `skills` CLI only copies files, so this step runs the bundled installer:
+
+   ```bash
+   bash ~/.claude/skills/tool-budget/scripts/install.sh
+   ```
+
+   Skip this step if you only want the guidance.
+
+3. In Claude Code, open `/hooks` once or restart Claude Code. Hooks are read when a session starts, so a newly added hook doesn't run in a session that was already open.
+
+### With git
+
+Use this if you want to edit the skill, since your changes then take effect straight away:
 
 ```bash
 git clone https://github.com/gerald-donkor/tool-budget.git ~/Projects/tool-budget
 bash ~/Projects/tool-budget/scripts/install.sh
 ```
 
-Then, in Claude Code, open `/hooks` once or restart Claude Code. Hooks are read when a session starts, so a newly added hook doesn't run in a session that was already open.
+Then open `/hooks` or restart Claude Code. Keep the repo where you cloned it, because the skill is a link to it; if you move it, re-run the installer.
 
-The installer:
+### What the installer does
 
-- links the skill into `~/.claude/skills/`;
+- links the skill into `~/.claude/skills/`, unless it's already installed there;
 - copies the hook and status-line scripts into `~/.claude/hooks/`;
 - backs up `~/.claude/settings.json`, then registers the hook;
 - sets up the status-bar count;
 - adds the rules block to `~/.claude/CLAUDE.md`.
 
-It's safe to re-run and keeps your other settings. Keep the repo where you cloned it, because the skill is a link to it; if you move it, re-run the installer. For each step in detail, see [what the installer does](docs/how-it-works.md#what-the-installer-does).
+It's safe to re-run and keeps your other settings. For each step in detail, see [what the installer does](docs/how-it-works.md#what-the-installer-does).
 
 ### Check the install
 
@@ -134,22 +168,35 @@ To change the rules themselves, edit [`SKILL.md`](SKILL.md) or [`scripts/claude-
 
 ## Updating
 
+If you installed with the `skills` CLI:
+
+```bash
+npx skills update tool-budget -g
+bash ~/.claude/skills/tool-budget/scripts/install.sh
+```
+
+If you installed with git:
+
 ```bash
 cd ~/Projects/tool-budget
 git pull
 bash scripts/install.sh
 ```
 
-Changes to `SKILL.md` take effect straight away, because the skill is a link to the repo. Re-running the installer copies the latest scripts and refreshes the rules block.
+Re-running the installer copies the latest hook scripts and refreshes the rules block. With a git install, changes to `SKILL.md` take effect straight away, because the skill is a link to the repo.
 
 ## Uninstalling
 
-There's no uninstall script. Remove the pieces by hand:
+Remove the skill:
 
 ```bash
-# Skill link
-rm ~/.claude/skills/tool-budget
+npx skills remove tool-budget -g   # if you installed with the skills CLI
+rm ~/.claude/skills/tool-budget    # if you installed with git
+```
 
+That removes only the skill. Remove the counter, status-bar count and rules block by hand:
+
+```bash
 # Hook registration (backs up settings first)
 cp ~/.claude/settings.json ~/.claude/settings.json.bak
 tmp=$(mktemp)
